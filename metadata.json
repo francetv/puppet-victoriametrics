@@ -1,0 +1,45 @@
+{
+  "name": "puppet-victoriametrics",
+  "version": "0.2.0",
+  "author": "Francetelevisions",
+  "summary": "Installs, configures, and manages Victoriametrics.",
+  "license": "The MIT License (MIT)",
+  "source": "https://github.com/francetv/puppet-victoriametrics",
+  "project_page": "https://github.com/francetv/puppet-victoriametrics",
+  "issues_url": "https://github.com/francetv/puppet-victoriametrics/issues",
+  "dependencies": [
+    {
+      "name": "puppet/archive",
+      "version_requirement": ">= 4.15.0 < 10.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 9.0.0 < 10.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 7.24 < 9.0.0"
+    }
+  ],
+  "description": "Module for VictoriaMetrics configuration",
+  "pdk-version": "3.0.1",
+  "template-url": "pdk-default#3.0.1",
+  "template-ref": "tags/3.0.1-0-gd13288a"
+}

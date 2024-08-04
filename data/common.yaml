@@ -1,0 +1,142 @@
+---
+# Version
+victoriametrics::params::version: "v1.102.1"
+victoriametrics::params::ensure: present
+
+victoriametrics::vmstorage::enterprise: false
+victoriametrics::vmstorage::restart: true
+
+victoriametrics::vmselect::enterprise: false
+victoriametrics::vmselect::restart: true
+
+victoriametrics::vminsert::enterprise: false
+victoriametrics::vminsert::restart: true
+
+# Repository
+victoriametrics::params::repository_url: "https://github.com/VictoriaMetrics/VictoriaMetrics"
+victoriametrics::params::platform: "linux"
+victoriametrics::params::architecture: "%{facts.os.architecture}"
+victoriametrics::params::archive_name: "victoria-metrics-%{lookup('victoriametrics::params::platform')}-%{lookup('victoriametrics::params::architecture')}-%{lookup('victoriametrics::params::version')}-cluster"
+victoriametrics::params::download_url: "%{lookup('victoriametrics::params::repository_url')}/releases/download/%{lookup('victoriametrics::params::version')}/%{lookup('victoriametrics::params::archive_name')}.tar.gz"
+
+# User/Group
+victoriametrics::params::user: "victoriametrics"
+victoriametrics::params::group: "victoriametrics"
+victoriametrics::params::shell: "/usr/sbin/nologin"
+
+# Systemd
+victoriametrics::vmstorage::systemd_exec_start_post: ""
+victoriametrics::vmstorage::systemd_exec_stop: ""
+# # See https://www.freedesktop.org/software/systemd/man/systemd.exec.html#ProtectHome=
+# # Available options: 'yes', 'read-only', 'tmpfs'
+victoriametrics::vmstorage::systemd_protect_home: "yes"
+# Service
+victoriametrics::vmstorage::service_manage: true
+victoriametrics::vmstorage::service_name: "vmstorage"
+victoriametrics::vmstorage::service_ensure: "present"
+
+victoriametrics::vmselect::systemd_exec_start_post: ""
+victoriametrics::vmselect::systemd_exec_stop: ""
+# # See https://www.freedesktop.org/software/systemd/man/systemd.exec.html#ProtectHome=
+# # Available options: 'yes', 'read-only', 'tmpfs'
+victoriametrics::vmselect::systemd_protect_home: "yes"
+# Service
+victoriametrics::vmselect::service_manage: true
+victoriametrics::vmselect::service_name: "vmselect"
+victoriametrics::vmselect::service_ensure: "present"
+
+victoriametrics::vminsert::systemd_exec_start_post: ""
+victoriametrics::vminsert::systemd_exec_stop: ""
+# # See https://www.freedesktop.org/software/systemd/man/systemd.exec.html#ProtectHome=
+# # Available options: 'yes', 'read-only', 'tmpfs'
+victoriametrics::vminsert::systemd_protect_home: "yes"
+# Service
+victoriametrics::vminsert::service_manage: true
+victoriametrics::vminsert::service_name: "vminsert"
+victoriametrics::vminsert::service_ensure: "present"
+
+# Binary
+victoriametrics::params::binary_directory:
+  path: "/opt/victoriametrics/bin"
+  owner: "root"
+  group: "root"
+  mode: "0755"
+
+# Configuration
+victoriametrics::params::configuration_directory:
+  path: "/etc/victoriametrics"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+victoriametrics::vmstorage::configuration_file:
+  path: "%{lookup('victoriametrics::params::configuration_directory.path')}/vmstorage.conf"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"
+
+victoriametrics::vmstorage::httplistenaddr_ip: "0.0.0.0"
+victoriametrics::vmstorage::httplistenaddr_port: 8482
+
+victoriametrics::vmstorage::configuration_map:
+  httpListenAddr: "%{lookup('victoriametrics::vmstorage::httplistenaddr_ip')}:%{lookup('victoriametrics::vmstorage::httplistenaddr_port')}"
+  retentionPeriod: "1"
+  storageDataPath: "%{lookup('victoriametrics::vmstorage::data_directory.path')}"
+
+# Data
+victoriametrics::vmstorage::data_directory:
+  path: "/var/lib/victoriametrics/vmstorage"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+
+victoriametrics::vmselect::configuration_directory:
+  path: "/etc/victoriametrics"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+victoriametrics::vmselect::configuration_file:
+  path: "%{lookup('victoriametrics::params::configuration_directory.path')}/vmselect.conf"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"
+
+victoriametrics::vmselect::httplistenaddr_ip: "0.0.0.0"
+victoriametrics::vmselect::httplistenaddr_port: 8481
+
+victoriametrics::vmselect::configuration_map:
+  cacheDataPath: "%{lookup('victoriametrics::vmselect::cache_directory.path')}"
+  httpListenAddr: "%{lookup('victoriametrics::vmselect::httplistenaddr_ip')}:%{lookup('victoriametrics::vmselect::httplistenaddr_port')}"
+  storageNode: "localhost"
+
+# Cache
+victoriametrics::vmselect::cache_directory:
+  path: "/var/lib/victoriametrics/vmselect/cache"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+
+victoriametrics::vminsert::configuration_directory:
+  path: "/etc/victoriametrics"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+victoriametrics::vminsert::configuration_file:
+  path: "%{lookup('victoriametrics::params::configuration_directory.path')}/vminsert.conf"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"
+victoriametrics::vminsert::relabeling_configuration_file:
+  path: "%{lookup('victoriametrics::params::configuration_directory.path')}/relabel.yaml"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"
+
+victoriametrics::vminsert::httplistenaddr_ip: "0.0.0.0"
+victoriametrics::vminsert::httplistenaddr_port: 8480
+
+victoriametrics::vminsert::configuration_map:
+  httpListenAddr: "%{lookup('victoriametrics::vminsert::httplistenaddr_ip')}:%{lookup('victoriametrics::vminsert::httplistenaddr_port')}"
+  replicationFactor: "1"
+  storageNode: "localhost"
+
+victoriametrics::vminsert::relabeling_configuration_map: false

@@ -1,0 +1,1 @@
+type Victoriametrics::Storage_nodes = Array[Victoriametrics::Storage_node_entry]
