@@ -17,11 +17,13 @@ class victoriametrics::vmselect::config {
   }
 
   file { 'configuration_directory':
-    * => $configuration_directory,
+    ensure => 'directory',
+    *      => $configuration_directory,
   }
   file { 'configuration_file':
     *       => $configuration_file,
     content => template("${module_name}/vmselect.conf.erb"),
+    require => File['configuration_directory']
   }
   file { 'cache_directory':
     * => $cache_directory,
