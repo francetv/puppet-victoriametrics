@@ -18,8 +18,8 @@ class victoriametrics::install {
       source       => $download_url,
       extract      => true,
       extract_path => $binary_directory['path'],
-      user         => $user,
-      group        => $group,
+      user         => 'root',
+      group        => 'root',
       path         => "${binary_directory['path']}/${archive_name}.tar.gz",
       cleanup      => true,
     }
