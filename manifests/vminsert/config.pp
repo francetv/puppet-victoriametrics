@@ -23,9 +23,11 @@ class victoriametrics::vminsert::config {
   file { 'configuration_file':
     *       => $configuration_file,
     content => template("${module_name}/vminsert.conf.erb"),
+    require => File['configuration_directory']
   }
   file { 'relabeling_configuration_file':
     *       => $relabeling_configuration_file,
     content => stdlib::to_yaml($relabeling_configuration_map),
+    require => File['configuration_directory']
   }
 }
