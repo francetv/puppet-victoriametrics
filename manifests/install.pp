@@ -1,27 +1,47 @@
 # PRIVATE CLASS: do not call directly
-class victoriametrics::install {
+class victoriametrics::install (
+  $archive_name = $victoriametrics::params::archive_name
+) {
   assert_private()
   $version = $victoriametrics::params::version
-  $user = $victoriametrics::params::user
-  $group = $victoriametrics::params::group
   $ensure = $victoriametrics::params::ensure
+  $root_install = $victoriametrics::params::root_install
   $binary_directory = $victoriametrics::params::binary_directory
   $repository_url = $victoriametrics::params::repository_url
   $platform = $victoriametrics::params::platform
-  $archive_name = $victoriametrics::params::archive_name
-  $download_url = $victoriametrics::params::download_url
+  $download_url = "${repository_url}/releases/download/${version}/${archive_name}.tar.gz"
 
   unless $victoriametrics_version == $version {
-    archive { $archive_name:
-      ensure       => $ensure,
-      creates      => $binary_directory['path'],
-      source       => $download_url,
-      extract      => true,
-      extract_path => $binary_directory['path'],
-      user         => 'root',
-      group        => 'root',
-      path         => "${binary_directory['path']}/${archive_name}.tar.gz",
-      cleanup      => true,
+    file { $root_install['path']:
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+      owner   => 'root',
+      group   => 'root',
     }
+    file { "${root_install['path']}/.${version}":
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => 'ug+r',
+    }
+  }
+
+  archive { "/tmp/${archive_name}.tar.gz":
+    ensure       => $ensure,
+    creates      => "${root_install['path']}/.${version}",
+    source       => $download_url,
+    extract      => true,
+    extract_path => "${root_install['path']}/.${version}",
+    user         => 'root',
+    group        => 'root',
+    require      => File["${root_install['path']}/.${version}"]
+  }
+  file { $binary_directory['path']:
+    ensure  => link,
+    owner   => 'root',
+    group   => 'root',
+    target  => "${root_install['path']}/.${version}",
+    require => Archive["/tmp/${archive_name}.tar.gz"]
   }
 }

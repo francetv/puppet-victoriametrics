@@ -5,6 +5,7 @@ class victoriametrics::user {
   $group = $victoriametrics::params::group
   $shell = $victoriametrics::params::shell
   $ensure = $victoriametrics::params::ensure
+  $binary_directory = $victoriametrics::params::binary_directory
 
   group { $group:
     ensure  => $ensure,
@@ -18,6 +19,7 @@ class victoriametrics::user {
     system  => true,
     gid     => $group,
     shell   => $shell,
+    home    => $binary_directory['path'],
     require => Group[$group]
   }
 }

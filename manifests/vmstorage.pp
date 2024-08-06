@@ -12,10 +12,6 @@ class victoriametrics::vmstorage (
   Variant[Boolean, String] $ensure               = $victoriametrics::params::ensure,
   Boolean $enterprise                            = undef,
   Boolean $restart                               = undef,
-  String $repository_url                         = $victoriametrics::params::repository_url,
-  String $platform                               = $victoriametrics::params::platform,
-  String $download_url                           = $victoriametrics::params::download_url,
-  String $archive_name                           = $victoriametrics::params::archive_name,
   Victoriametrics::File $configuration_directory = $victoriametrics::params::configuration_directory,
   Victoriametrics::File $configuration_file      = undef,
   Victoriametrics::File $data_directory          = undef,
@@ -23,12 +19,13 @@ class victoriametrics::vmstorage (
   String $service_name                           = undef,
   String $service_ensure                         = undef,
   Boolean $service_manage                        = undef,
+  Boolean $service_enable                        = undef,
+  Boolean $service_status                        = undef,
 ) inherits victoriametrics::params {
   contain victoriametrics::user
   contain victoriametrics::install
   contain victoriametrics::vmstorage::config
   contain victoriametrics::vmstorage::service
-  contain victoriametrics::systemd::reload
 
   if ($ensure == 'present' or $ensure == true) {
     Class['victoriametrics::user'] -> Class['victoriametrics::install'] -> Class['victoriametrics::vmstorage::config']

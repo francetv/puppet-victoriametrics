@@ -12,12 +12,15 @@ victoriametrics::vmselect::restart: true
 victoriametrics::vminsert::enterprise: false
 victoriametrics::vminsert::restart: true
 
+victoriametrics::vmutils::enterprise: false
+
 # Repository
 victoriametrics::params::repository_url: "https://github.com/VictoriaMetrics/VictoriaMetrics"
 victoriametrics::params::platform: "linux"
 victoriametrics::params::architecture: "%{facts.os.architecture}"
 victoriametrics::params::archive_name: "victoria-metrics-%{lookup('victoriametrics::params::platform')}-%{lookup('victoriametrics::params::architecture')}-%{lookup('victoriametrics::params::version')}-cluster"
-victoriametrics::params::download_url: "%{lookup('victoriametrics::params::repository_url')}/releases/download/%{lookup('victoriametrics::params::version')}/%{lookup('victoriametrics::params::archive_name')}.tar.gz"
+
+victoriametrics::vmutils::archive_name: "vmutils-%{lookup('victoriametrics::params::platform')}-%{lookup('victoriametrics::params::architecture')}-%{lookup('victoriametrics::params::version')}-cluster"
 
 # User/Group
 victoriametrics::params::user: "victoriametrics"
@@ -32,6 +35,8 @@ victoriametrics::vmstorage::systemd_exec_stop: ""
 victoriametrics::vmstorage::systemd_protect_home: "yes"
 # Service
 victoriametrics::vmstorage::service_manage: true
+victoriametrics::vmstorage::service_enable: true
+victoriametrics::vmstorage::service_status: true
 victoriametrics::vmstorage::service_name: "vmstorage"
 victoriametrics::vmstorage::service_ensure: "present"
 
@@ -42,6 +47,8 @@ victoriametrics::vmselect::systemd_exec_stop: ""
 victoriametrics::vmselect::systemd_protect_home: "yes"
 # Service
 victoriametrics::vmselect::service_manage: true
+victoriametrics::vmselect::service_enable: true
+victoriametrics::vmselect::service_status: true
 victoriametrics::vmselect::service_name: "vmselect"
 victoriametrics::vmselect::service_ensure: "present"
 
@@ -52,12 +59,20 @@ victoriametrics::vminsert::systemd_exec_stop: ""
 victoriametrics::vminsert::systemd_protect_home: "yes"
 # Service
 victoriametrics::vminsert::service_manage: true
+victoriametrics::vminsert::service_enable: true
+victoriametrics::vminsert::service_status: true
 victoriametrics::vminsert::service_name: "vminsert"
 victoriametrics::vminsert::service_ensure: "present"
 
 # Binary
 victoriametrics::params::binary_directory:
   path: "/opt/victoriametrics/bin"
+  owner: "root"
+  group: "root"
+  mode: "0755"
+
+victoriametrics::params::root_install:
+  path: "/opt/victoriametrics"
   owner: "root"
   group: "root"
   mode: "0755"

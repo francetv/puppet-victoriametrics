@@ -8,6 +8,7 @@ class victoriametrics::params (
   Variant[Boolean, String] $ensure               = undef,
   String $version                                = undef,
   Victoriametrics::File $configuration_directory = undef,
+  Victoriametrics::File $root_install            = undef,
   Victoriametrics::File $binary_directory        = undef,
   String $user                                   = undef,
   String $group                                  = undef,
@@ -16,6 +17,5 @@ class victoriametrics::params (
   String $platform                               = undef,
   String $architecture                           = undef,
   String $archive_name                           = undef,
-  String $download_url                           = undef,
 ) {
 }

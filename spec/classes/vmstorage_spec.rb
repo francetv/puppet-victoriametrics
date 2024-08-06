@@ -35,9 +35,6 @@ describe 'victoriametrics::vmstorage' do
           is_expected.to contain_class('Victoriametrics::Params')
         end
         it do
-          is_expected.to contain_class('Victoriametrics::Systemd::Reload')
-        end
-        it do
           is_expected.to contain_user('victoriametrics').
             with_ensure('present').
             with_shell('/usr/sbin/nologin').
@@ -52,6 +49,7 @@ describe 'victoriametrics::vmstorage' do
 
         it do
           is_expected.to contain_file('configuration_directory').
+            with_ensure('directory').
             with_path('/etc/victoriametrics').
             with_mode('0751').
             with_owner('victoriametrics').
@@ -76,52 +74,39 @@ describe 'victoriametrics::vmstorage' do
         end
 
         it do
-          is_expected.to contain_archive('victoria-metrics-linux-amd64-v1.102.1-cluster').
-            with_user('victoriametrics').
-            with_group('victoriametrics').
-            with_creates('/opt/victoriametrics/bin').
-            with_extract_path('/opt/victoriametrics/bin').
+          is_expected.to contain_archive('/tmp/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz').
+            with_user('root').
+            with_group('root').
+            with_creates('/opt/victoriametrics/.v1.102.1').
+            with_extract_path('/opt/victoriametrics/.v1.102.1').
             with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.102.1/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz')
         end
         it do
-          is_expected.to contain_datacat('/etc/systemd/system/vmstorage.service')
-        end
-        it do
-          is_expected.to contain_datacat_fragment('sytemd_vmstorage')
-        end
-        it do
-          is_expected.to contain_exec('systemctl-daemon-reload')
-        end
-        it do
-          is_expected.to contain_victoriametrics__systemd__unit('vmstorage').
+          is_expected.to contain_systemd__manage_unit('vmstorage.service').
             with_ensure('present').
-            with_type('service').
-            with_settings({
-                            'Unit' => {
-                              'Description' => 'VictoriaMetrics vmstorage service',
-                              'After' => 'network.target',
-                            },
-                            'Service' => {
-                              'Type' => 'simple',
-                              'User' => 'victoriametrics',
-                              'Group' => 'victoriametrics',
-                              'UMask' => '0002',
-                              'WorkingDirectory' => '/var/lib/victoriametrics/vmstorage',
-                              'ExecStart' => '/opt/victoriametrics/bin/vmstorage-prod -envflag.enable',
-                              'EnvironmentFile' => '/etc/victoriametrics/vmstorage.conf',
-                              'Restart' => 'on-failure',
-                              'RestartSec' => '30',
-                              'StandardOutput' => 'syslog',
-                              'StandardError' => 'syslog',
-                              'PrivateTmp' => 'yes',
-                              'NoNewPrivileges' => 'yes',
-                              'ProtectSystem' => 'full',
-                              'SyslogIdentifier' => 'vmstorage'
-                            },
-                            'Install' => {
-                              'WantedBy' => 'multi-user.target'
-                            },
-                          })
+            with_enable(true).
+            with_active(true).
+            with_unit_entry(
+              'Description' => 'VictoriaMetrics vmstorage service',
+              'After' => 'network.target',
+              ).
+            with_service_entry(
+              'Type' => 'simple',
+              'User' => 'victoriametrics',
+              'Group' => 'victoriametrics',
+              'UMask' => '0002',
+              'ExecStart' => '/opt/victoriametrics/bin/vmstorage-prod -envflag.enable',
+              'EnvironmentFile' => '/etc/victoriametrics/vmstorage.conf',
+              'Restart' => 'on-failure',
+              'RestartSec' => '30',
+              'PrivateTmp' => true,
+              'NoNewPrivileges' => true,
+              'ProtectSystem' => 'full',
+              'SyslogIdentifier' => 'vmstorage'
+            ).
+            with_install_entry(
+              'WantedBy' => 'multi-user.target'
+            )
         end
       end
       describe 'with specific bind_ip values and bind_port values' do
