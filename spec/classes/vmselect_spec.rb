@@ -77,8 +77,8 @@ describe 'victoriametrics::vmselect' do
           is_expected.to contain_archive('/tmp/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz').
             with_user('root').
             with_group('root').
-            with_creates('/opt/victoriametrics/.v1.102.1').
-            with_extract_path('/opt/victoriametrics/.v1.102.1').
+            with_creates('/opt/victoriametrics/v1.102.1').
+            with_extract_path('/opt/victoriametrics/v1.102.1').
             with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.102.1/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz')
         end
         it do

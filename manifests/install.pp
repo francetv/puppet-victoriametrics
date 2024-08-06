@@ -19,7 +19,7 @@ class victoriametrics::install (
       owner   => 'root',
       group   => 'root',
     }
-    file { "${root_install['path']}/.${version}":
+    file { "${root_install['path']}/${version}":
       ensure => directory,
       owner  => 'root',
       group  => 'root',
@@ -29,19 +29,19 @@ class victoriametrics::install (
 
   archive { "/tmp/${archive_name}.tar.gz":
     ensure       => $ensure,
-    creates      => "${root_install['path']}/.${version}",
+    creates      => "${root_install['path']}/${version}",
     source       => $download_url,
     extract      => true,
-    extract_path => "${root_install['path']}/.${version}",
+    extract_path => "${root_install['path']}/${version}",
     user         => 'root',
     group        => 'root',
-    require      => File["${root_install['path']}/.${version}"]
+    require      => File["${root_install['path']}/${version}"]
   }
   file { $binary_directory['path']:
     ensure  => link,
     owner   => 'root',
     group   => 'root',
-    target  => "${root_install['path']}/.${version}",
+    target  => "${root_install['path']}/${version}",
     require => Archive["/tmp/${archive_name}.tar.gz"]
   }
 }
