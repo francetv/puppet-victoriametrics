@@ -11,6 +11,11 @@ class victoriametrics::install (
   $platform = $victoriametrics::params::platform
   $download_url = "${repository_url}/releases/download/${version}/${archive_name}.tar.gz"
 
+  file { $root_install['path']:
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+  }
   file { $binary_directory['path']:
     ensure  => directory,
     owner   => 'root',
@@ -22,7 +27,9 @@ class victoriametrics::install (
     source       => $download_url,
     extract      => true,
     extract_path => "${binary_directory['path']}",
-    unless       => "test $(./vmstorage-prod --version | tr '-' ' ' | awk '{print $5}') == ${version}",
+    unless       => [
+      "test $(${binary_directory['path']}/vmstorage-prod --version 2>&1 | tr '-' ' ' | awk '{print $5}') = '${version}'",
+    ],
     user         => 'root',
     group        => 'root',
   }
