@@ -12,14 +12,14 @@ class victoriametrics::install (
   $download_url = "${repository_url}/releases/download/${version}/${archive_name}.tar.gz"
 
   file { $root_install['path']:
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
   }
   file { $binary_directory['path']:
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
   }
 
   archive { "/tmp/${archive_name}.tar.gz":
@@ -32,5 +32,6 @@ class victoriametrics::install (
     ],
     user         => 'root',
     group        => 'root',
+    env_path     => ["/bin", "/usr/bin", "/sbin", "/usr/sbin"],
   }
 }
