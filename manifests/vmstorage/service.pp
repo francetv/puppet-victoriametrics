@@ -18,7 +18,7 @@ class victoriametrics::vmstorage::service {
 
   if $service_manage {
     systemd::manage_unit { "${service_name}.service":
-      ensure        => $service_ensure,
+      ensure        => $ensure,
       enable        => $service_enable,
       active        => $service_status,
       unit_entry    => {

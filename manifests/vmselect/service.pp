@@ -6,7 +6,6 @@ class victoriametrics::vmselect::service {
   $group = $victoriametrics::params::group
   $configuration_file = $victoriametrics::vmselect::configuration_file
   $binary_directory = $victoriametrics::params::binary_directory
-  $cache_directory = $victoriametrics::vmselect::cache_directory
   $service_enable = $victoriametrics::vmselect::service_enable
   $service_status = $victoriametrics::vmselect::service_status
   $service_manage = $victoriametrics::vmselect::service_manage
@@ -18,7 +17,7 @@ class victoriametrics::vmselect::service {
 
   if $service_manage {
     systemd::manage_unit { "${service_name}.service":
-      ensure        => $service_ensure,
+      ensure        => $ensure,
       enable        => $service_enable,
       active        => $service_status,
       unit_entry    => {

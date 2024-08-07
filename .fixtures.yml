@@ -2,7 +2,9 @@
 # See https://github.com/puppetlabs/puppetlabs_spec_helper#using-fixtures for details
 ---
 fixtures:
+  repositories:
+    archive:
+      repo: https://github.com/francetv/puppet-archive.git
   forge_modules:
     stdlib: "puppetlabs-stdlib"
-    archive: "puppet-archive"
     systemd: "puppet-systemd"
