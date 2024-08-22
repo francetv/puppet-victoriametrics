@@ -73,8 +73,8 @@ victoriametrics::params::binary_directory:
 
 victoriametrics::params::root_install:
   path: "/opt/victoriametrics"
-  owner: "root"
-  group: "root"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
   mode: "0755"
 
 # Configuration

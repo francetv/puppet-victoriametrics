@@ -5,6 +5,8 @@ class victoriametrics::install (
   assert_private()
   $version = $victoriametrics::params::version
   $ensure = $victoriametrics::params::ensure
+  $user = $victoriametrics::params::user
+  $group = $victoriametrics::params::group
   $root_install = $victoriametrics::params::root_install
   $binary_directory = $victoriametrics::params::binary_directory
   $repository_url = $victoriametrics::params::repository_url
@@ -13,8 +15,8 @@ class victoriametrics::install (
 
   file { $root_install['path']:
     ensure => directory,
-    owner  => 'root',
-    group  => 'root',
+    owner  => $user,
+    group  => $group,
   }
   file { $binary_directory['path']:
     ensure => directory,
