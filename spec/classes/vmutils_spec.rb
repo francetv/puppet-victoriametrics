@@ -12,11 +12,11 @@ describe 'victoriametrics::vmutils' do
           is_expected.to contain_class('Victoriametrics::Params')
         end
         it do
-          is_expected.to contain_archive('/tmp/vmutils-linux-amd64-v1.102.1-cluster.tar.gz').
+          is_expected.to contain_archive('/tmp/vmutils-linux-amd64-v1.114.0-cluster.tar.gz').
             with_user('root').
             with_group('root').
             with_extract_path('/opt/victoriametrics/bin').
-            with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.102.1/vmutils-linux-amd64-v1.102.1-cluster.tar.gz')
+            with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.114.0/vmutils-linux-amd64-v1.114.0-cluster.tar.gz')
         end
       end
     end

@@ -1,6 +1,6 @@
 ---
 # Version
-victoriametrics::params::version: "v1.111.0"
+victoriametrics::params::version: "v1.114.0"
 victoriametrics::params::ensure: present
 
 victoriametrics::vmstorage::enterprise: false
@@ -11,6 +11,9 @@ victoriametrics::vmselect::restart: true
 
 victoriametrics::vminsert::enterprise: false
 victoriametrics::vminsert::restart: true
+
+victoriametrics::vmagent::enterprise: false
+victoriametrics::vmagent::restart: true
 
 victoriametrics::vmutils::enterprise: false
 
@@ -63,6 +66,18 @@ victoriametrics::vminsert::service_enable: true
 victoriametrics::vminsert::service_status: true
 victoriametrics::vminsert::service_name: "vminsert"
 victoriametrics::vminsert::service_ensure: "present"
+
+victoriametrics::vmagent::systemd_exec_start_post: ""
+victoriametrics::vmagent::systemd_exec_stop: ""
+# # See https://www.freedesktop.org/software/systemd/man/systemd.exec.html#ProtectHome=
+# # Available options: 'yes', 'read-only', 'tmpfs'
+victoriametrics::vmagent::systemd_protect_home: "yes"
+# Service
+victoriametrics::vmagent::service_manage: true
+victoriametrics::vmagent::service_enable: true
+victoriametrics::vmagent::service_status: true
+victoriametrics::vmagent::service_name: "vmagent"
+victoriametrics::vmagent::service_ensure: "present"
 
 # Binary
 victoriametrics::params::binary_directory:
@@ -155,3 +170,16 @@ victoriametrics::vminsert::configuration_map:
   storageNode: "localhost"
 
 victoriametrics::vminsert::relabeling_configuration_map: false
+
+victoriametrics::vmagent::configuration_directory:
+  path: "/etc/victoriametrics"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0751"
+victoriametrics::vmagent::configuration_file:
+  path: "%{lookup('victoriametrics::params::configuration_directory.path')}/prometheus.yaml"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"
+
+victoriametrics::vmagent::scrape_configs: {}

@@ -74,11 +74,11 @@ describe 'victoriametrics::vmselect' do
         end
 
         it do
-          is_expected.to contain_archive('/tmp/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz').
+          is_expected.to contain_archive('/tmp/victoria-metrics-linux-amd64-v1.114.0-cluster.tar.gz').
             with_user('root').
             with_group('root').
             with_extract_path('/opt/victoriametrics/bin').
-            with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.102.1/victoria-metrics-linux-amd64-v1.102.1-cluster.tar.gz')
+            with_source('https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v1.114.0/victoria-metrics-linux-amd64-v1.114.0-cluster.tar.gz')
         end
         it do
           is_expected.to contain_systemd__manage_unit('vmselect.service').
