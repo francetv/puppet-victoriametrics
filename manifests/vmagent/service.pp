@@ -6,7 +6,7 @@ class victoriametrics::vmagent::service {
   $group = $victoriametrics::params::group
   $configuration_file = $victoriametrics::vmagent::configuration_file
   $binary_directory = $victoriametrics::params::binary_directory
-  $tmp_data_path = $victoriametrics::params::tmp_data_path
+  $tmp_data_path = $victoriametrics::vmagent::tmp_data_path
   $service_enable = $victoriametrics::vmagent::service_enable
   $service_status = $victoriametrics::vmagent::service_status
   $service_manage = $victoriametrics::vmagent::service_manage
