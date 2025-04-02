@@ -8,11 +8,11 @@ describe 'victoriametrics::vmagent' do
 
     it {
       is_expected.to contain_class('victoriametrics::user').
-        that_comes_before('Class[victoriametrics::install]')
+        that_comes_before('Class[victoriametrics::vmutils]')
     }
 
     it {
-      is_expected.to contain_class('victoriametrics::install').
+      is_expected.to contain_class('victoriametrics::vmutils').
         that_comes_before('Class[victoriametrics::vmagent::config]')
     }
 

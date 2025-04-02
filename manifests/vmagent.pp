@@ -14,7 +14,6 @@ class victoriametrics::vmagent (
   Boolean $restart                                             = undef,
   Victoriametrics::File $configuration_directory               = $victoriametrics::params::configuration_directory,
   Victoriametrics::File $configuration_file                    = undef,
-  Hash $scrape_configs                                         = undef,
   String $service_name                                         = undef,
   String $service_ensure                                       = undef,
   Boolean $service_manage                                      = undef,
@@ -26,12 +25,12 @@ class victoriametrics::vmagent (
   String[1] $promscrape_stream_parse                           = undef,
 ) inherits victoriametrics::params {
   contain victoriametrics::user
-  contain victoriametrics::install
+  contain victoriametrics::vmutils
   contain victoriametrics::vmagent::config
   contain victoriametrics::vmagent::service
 
   if ($ensure == 'present' or $ensure == true) {
-    Class['victoriametrics::user'] -> Class['victoriametrics::install'] -> Class['victoriametrics::vmagent::config']
+    Class['victoriametrics::user'] -> Class['victoriametrics::vmutils'] -> Class['victoriametrics::vmagent::config']
 
     if $restart {
       # If $restart is true, notify the service on config changes (~>)
