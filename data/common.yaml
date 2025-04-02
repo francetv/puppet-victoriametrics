@@ -181,3 +181,8 @@ victoriametrics::vmagent::configuration_file:
   owner: "%{lookup('victoriametrics::params::user')}"
   group: "%{lookup('victoriametrics::params::group')}"
   mode: "0644"
+victoriametrics::vmagent::tmp_data_path:
+  path: "/opt/victoriametrics/cache"
+  owner: "%{lookup('victoriametrics::params::user')}"
+  group: "%{lookup('victoriametrics::params::group')}"
+  mode: "0644"

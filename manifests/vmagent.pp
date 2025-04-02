@@ -13,6 +13,7 @@ class victoriametrics::vmagent (
   Boolean $enterprise                                          = undef,
   Boolean $restart                                             = undef,
   Victoriametrics::File $configuration_directory               = $victoriametrics::params::configuration_directory,
+  Victoriametrics::File $tmp_data_path                         = undef,
   Victoriametrics::File $configuration_file                    = undef,
   String $service_name                                         = undef,
   String $service_ensure                                       = undef,
