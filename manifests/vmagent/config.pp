@@ -6,7 +6,7 @@ class victoriametrics::vmagent::config {
   $binary_directory = $victoriametrics::params::binary_directory
   $configuration_directory = $victoriametrics::vmagent::configuration_directory
   $configuration_file = $victoriametrics::vmagent::configuration_file
-  $tmp_data_path = $victoriametrics::params::tmp_data_path
+  $tmp_data_path = $victoriametrics::vmagent::tmp_data_path
   $promscrape_config = $victoriametrics::vmagent::promscrape_config
 
   file { 'configuration_directory':
