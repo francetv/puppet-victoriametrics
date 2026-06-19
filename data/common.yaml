@@ -1,6 +1,6 @@
 ---
 # Version
-victoriametrics::params::version: "v1.138.0"
+victoriametrics::params::version: "v1.145.0"
 victoriametrics::params::ensure: present
 
 victoriametrics::vmstorage::enterprise: false
